@@ -7,12 +7,17 @@
         public string House { get; private set; }
         public string App { get; private set; }
 
-        public Address(string city, string street, string house, string app)
+        public Address(string city, string street, string house, string app = "")
         {
             City = city;
             Street = street;
             House = house;
             App = app;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}, {1}, {2}, {3}", City, Street, House, App);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DOMRIA
 {
@@ -41,6 +42,22 @@ namespace DOMRIA
                 area += room.Area;
 
             return area;
+        }
+
+        public void Show()
+        {
+            Show(Console.WriteLine);
+        }
+
+        public void Show(Action<string> action)
+        {
+            action($"Rooms: {CountRooms}");
+            action($"Total area: {TotalArea()}");
+
+            foreach (Room room in Rooms)
+            {
+                action($"\t{room.Name} : {room.Area}");
+            }
         }
 
     }

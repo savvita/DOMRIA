@@ -16,6 +16,13 @@ namespace DOMRIA
                 Ads = RegisteredPlatform.PlatformBoard.GetAds(this).Where((ad) => ad.Seller.Name == Name && ad.Seller.PhoneNumber == PhoneNumber);
         }
 
+        public static Manager GetManagerFromString(string str)
+        {
+            int index = str.IndexOf('-');
+
+            return new Manager(str.Substring(0, index - 1), str.Substring(index + 2));
+        }
+
         public List<Ad> GetAds()
         {
             return Ads.ToList();

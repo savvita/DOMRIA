@@ -4,7 +4,7 @@ namespace DOMRIA
 {
     internal class Price : IPrintable
     {
-        public decimal Rate { get; private set; } 
+        public decimal Rate { get; private set; }
 
         public decimal TotalUSD { get; private set; }
         public decimal TotalUAH { get; private set; }

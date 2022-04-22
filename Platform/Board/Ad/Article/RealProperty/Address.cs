@@ -15,6 +15,13 @@
             App = app;
         }
 
+        public static Address GetAddressFromString(string str)
+        {
+            string[] items = str.Split(", ");
+
+            return new Address(items[0], items[1], items[2], items[3]);
+        }
+
         public override string ToString() => string.Format("{0}, {1}, {2}, {3}", City, Street, House, App);
     }
 }

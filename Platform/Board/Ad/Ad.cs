@@ -36,6 +36,12 @@ namespace DOMRIA
             AdditionalData = new List<AdditionalInfo>();
         }
 
+        public Ad(string title, string description, IPrintable article, Price price, Manager seller, int id) : this(title, description, article, price, seller)
+        {
+            ID = id;
+            _id++;
+        }
+
         public void AddAdditionalData(AdditionalInfo info) => AdditionalData.Add(info);
 
         public void Show() => Show(Console.WriteLine);
@@ -57,6 +63,79 @@ namespace DOMRIA
             ArticlePrice.Show(action);
 
             action($"Seller: {Seller}");
+        }
+
+        public static Ad GetAdFromString(string str)
+        {
+            int id = 0;
+            bool status = true;
+            string title = String.Empty;
+            string description = String.Empty;
+            Apartment ap = new Apartment();
+            Address address = null;
+            decimal price = 0m;
+            Manager seller = null;
+            List<AdditionalInfo> infos = new List<AdditionalInfo>();
+
+            Func<string, int, string> GetValue = (string str, int index) => str.Substring(index + 2);
+
+            var lines = str.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string line in lines)
+            {
+                int index = line.IndexOf(':');
+                string property = line.Substring(0, index);
+
+                if (property == "ID")
+                {
+                    id = Convert.ToInt32(GetValue(line, index));
+                }
+                else if (property == "Status")
+                {
+                    if (GetValue(line, index) == "Actual")
+                        status = true;
+                    else
+                        status = false;
+                }
+                else if (property == "Title")
+                {
+                    title = GetValue(line, index);
+                }
+                else if (property == "Description")
+                {
+                    description = GetValue(line, index);
+                }
+                else if (property == "Room")
+                {
+                    ap.AddRoom(Room.GetRoomFromString(GetValue(line, index)));
+                }
+                else if (property == "Address")
+                {
+                    address = Address.GetAddressFromString(GetValue(line, index));
+                }
+                else if (property == "USD per meter")
+                {
+                    index = line.LastIndexOf(':');
+                    price = Convert.ToDecimal(GetValue(line, index));
+                }
+                else if (property == "Additional info")
+                {
+                    infos.Add(AdditionalInfo.GetAdditionalInfoFromString(GetValue(line, index)));
+                }
+                else if (property == "Seller")
+                {
+                    seller = Manager.GetManagerFromString(GetValue(line, index));
+                }
+            }
+
+            Ad ad = new Ad(title, description, new RealProperty(ap, address), new RealPropertyPrice(price, ap.TotalArea()), seller, id);
+            ad.IsActual = status;
+
+
+            foreach (AdditionalInfo info in infos)
+                ad.AddAdditionalData(info);
+
+            return ad;
         }
     }
 }

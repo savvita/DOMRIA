@@ -16,5 +16,12 @@ namespace DOMRIA
         public virtual void Show() => Show(Console.WriteLine);
 
         public virtual void Show(Action<string> action) => action($"Additional info:\t{Name}: {Value}");
+
+        public static AdditionalInfo GetAdditionalInfoFromString(string str)
+        {
+            int index = str.IndexOf(':');
+
+            return new AdditionalInfo(str.Substring(0, index - 1), str.Substring(index + 2));
+        }
     }
 }

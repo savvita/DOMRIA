@@ -8,7 +8,16 @@ namespace DOMRIA
         static void Main(string[] args)
         {
             DOM dom = new DOM();
-            dom.PlatformBoard.Save();
+            //dom.PlatformBoard.Save();
+            dom.PlatformBoard.Load();
+
+            var ads = dom.PlatformBoard.GetAds(new Manager("", ""));
+
+            foreach(var ad in ads)
+            {
+                ad.Show();
+                Console.WriteLine(new String('=', 20));
+            }
 
             //Manager m = (Manager) dom.Users[0];
             //m.GetAds()[0].AddAdditionalData(new AdditionalInfo("Water", "Absent"));
@@ -33,7 +42,6 @@ namespace DOMRIA
             //    ad.Show();
             //    Console.WriteLine(new String('=', 20));
             //}
-
         }
     }
 }

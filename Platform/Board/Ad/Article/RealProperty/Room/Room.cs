@@ -25,9 +25,6 @@ namespace DOMRIA
             return false;
         }
 
-        public override int GetHashCode()
-        {
-            return Name.GetHashCode() ^ Area.GetHashCode();
-        }
+        public override int GetHashCode() => Name.GetHashCode() ^ Area.GetHashCode();
     }
 }

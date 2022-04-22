@@ -1,30 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DOMRIA
 {
-    internal class AdBoard
+    internal class Board
     {
-        public List<Ad> Ads { get; private set; }
+        private readonly List<Ad> Ads;
 
-        public AdBoard()
+        public Board()
         {
             Ads = new List<Ad>();
         }
 
-        public void Add(Ad ad)
+        public List<Ad> GetAds(User caller = null)
         {
-            Ads.Add(ad);
-        }
+            if (caller is Manager)
+                return Ads;
 
-        public void Remove(Ad ad)
-        {
-            Ads.RemoveAll((_ad) => _ad.ID == ad.ID);
-        }
-
-        public void Remove(int id)
-        {
-            Ads.RemoveAll((_ad) => _ad.ID == id);
+            return Ads.Where((ad) => ad.IsActual == true).ToList();
         }
 
         public void Save(string path = "ads.txt")

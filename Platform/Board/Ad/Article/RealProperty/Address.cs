@@ -15,9 +15,6 @@
             App = app;
         }
 
-        public override string ToString()
-        {
-            return string.Format("{0}, {1}, {2}, {3}", City, Street, House, App);
-        }
+        public override string ToString() => string.Format("{0}, {1}, {2}, {3}", City, Street, House, App);
     }
 }

@@ -29,10 +29,7 @@ namespace DOMRIA
             return true;
         }
 
-        public bool RemoveRoom(Room room)
-        {
-            return Rooms.Remove(room);
-        }
+        public bool RemoveRoom(Room room) => Rooms.Remove(room);
 
         public double TotalArea()
         {
@@ -44,19 +41,16 @@ namespace DOMRIA
             return area;
         }
 
-        public void Show()
-        {
-            Show(Console.WriteLine);
-        }
+        public virtual void Show() => Show(Console.WriteLine);
 
-        public void Show(Action<string> action)
+        public virtual void Show(Action<string> action)
         {
             action($"Rooms: {CountRooms}");
             action($"Total area: {TotalArea()}");
 
             foreach (Room room in Rooms)
             {
-                action($"\t{room.Name} : {room.Area}");
+                action($"Room:\t{room.Name}: {room.Area}");
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace DOMRIA
 {
@@ -6,23 +7,33 @@ namespace DOMRIA
     {
         static void Main(string[] args)
         {
-            AdBoard board = new AdBoard();
+            DOM dom = new DOM();
+            dom.PlatformBoard.Save();
 
-            Apartment ap = new Apartment();
-            ap.AddRoom(new Room("Kitchen", 6.0));
-            ap.AddRoom(new Room("Bathroom", 3.0));
-            ap.AddRoom(new Room("Bedroom", 15.0));
+            //Manager m = (Manager) dom.Users[0];
+            //m.GetAds()[0].AddAdditionalData(new AdditionalInfo("Water", "Absent"));
 
-            board.Add(new Ad("Sell something", "Some description", new Address("Dnepr", "KM", "12", ""), new Contact("John", ""), ap, new Price(100, ap.TotalArea())));
-            board.Add(new Ad("Sell something again", "No description", new Address("Dnepr", "KM", "12", ""), new Contact("Smith", "0000"), ap, new Price(200, ap.TotalArea())));
+            //Client client = new Client("Crazy client", "");
 
-            foreach (Ad ad in board.Ads)
-            {
-                ad.Show();
-                Console.WriteLine(new string('=', 20));
-            }
+            //try
+            //{
+            //    client.AddFilter(FilterByRooms.Filter, new FilterByRoomsInfo(2, 5));
+            //    client.AddFilter(FilterByArea.Filter, new FilterByAreaInfo(20, 50));
+            //    //client.RemoveFilter(FilterByArea.Filter);
+            //    //client.RemoveFilter(FilterByArea.Filter);
+            //    client.ClearFilters();
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
 
-            board.Save();
+            //foreach(var ad in client.SetFilters(dom.PlatformBoard.GetAds()))
+            //{
+            //    ad.Show();
+            //    Console.WriteLine(new String('=', 20));
+            //}
+
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace DOMRIA
 {
@@ -21,7 +23,7 @@ namespace DOMRIA
 
         public bool AddManager(User user)
         {
-            if (Users.FindIndex((_user) => _user.Name == user.Name && _user.PhoneNumber == user.PhoneNumber) != -1)
+            if (Users.FindIndex(_user => _user.Equals(user)) != -1)
             {
                 return false;
             }
@@ -34,7 +36,7 @@ namespace DOMRIA
 
         public bool AddClient(User user)
         {
-            if (Users.FindIndex((_user) => _user.Name == user.Name && _user.PhoneNumber == user.PhoneNumber) == -1)
+            if (Users.FindIndex((_user) => _user.Equals(user)) != -1)
             {
                 return false;
             }
@@ -42,6 +44,19 @@ namespace DOMRIA
             Users.Add(new Client(user.Name, user.PhoneNumber));
 
             return true;
+        }
+
+        public static void ShowResults(IEnumerable<Ad> results)
+        {
+            var _results = results.ToList();
+            Console.WriteLine($"Found: {_results.Count}");
+            Console.WriteLine(new string('=', 15));
+
+            foreach (Ad ad in _results)
+            {
+                ad.Show();
+                Console.WriteLine(new string('=', 15));
+            }
         }
     }
 }

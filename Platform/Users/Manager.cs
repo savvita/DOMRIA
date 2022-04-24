@@ -8,25 +8,22 @@ namespace DOMRIA
         private readonly Platform RegisteredPlatform;
         private readonly IEnumerable<Ad> Ads;
 
-        public Manager(string name, string phoneNumber, Platform platform  = null) : base(name, phoneNumber)
+        public Manager(string name = "", string phoneNumber = "", Platform platform  = null) : base(name, phoneNumber)
         {
             RegisteredPlatform = platform;
 
             if(RegisteredPlatform != null)
-                Ads = RegisteredPlatform.PlatformBoard.GetAds(this).Where((ad) => ad.Seller.Name == Name && ad.Seller.PhoneNumber == PhoneNumber);
+                Ads = RegisteredPlatform.PlatformBoard.GetAds(this).Where((ad) => ad.Seller.Equals(this));
         }
 
         public static Manager GetManagerFromString(string str)
         {
             int index = str.IndexOf('-');
 
-            return new Manager(str.Substring(0, index - 1), str.Substring(index + 2));
+            return new Manager(str[..(index - 1)], str[(index + 2)..]);
         }
 
-        public List<Ad> GetAds()
-        {
-            return Ads.ToList();
-        }
+        public List<Ad> GetAds() => Ads.ToList();
 
         public bool Add(string title, string description, IPrintable article, Price price)
         {
@@ -35,7 +32,7 @@ namespace DOMRIA
 
             try
             {
-                RegisteredPlatform.PlatformBoard.GetAds(this).Add(new Ad(title, description, article, price, this));
+                RegisteredPlatform.PlatformBoard.Add(new Ad(title, description, article, price, this));
             }
             catch(System.Exception ex)
             {

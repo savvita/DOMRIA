@@ -21,7 +21,7 @@ namespace DOMRIA
         {
             int index = str.IndexOf(':');
 
-            return new AdditionalInfo(str.Substring(0, index - 1), str.Substring(index + 2));
+            return new AdditionalInfo(str[..(index - 1)], str[(index + 2)..]);
         }
     }
 }

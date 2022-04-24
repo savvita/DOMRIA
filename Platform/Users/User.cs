@@ -5,7 +5,7 @@
         public string Name { get; private set; }
         public string PhoneNumber { get; private set; }
 
-        public User(string name, string phoneNumber)
+        public User(string name = "", string phoneNumber = "")
         {
             Name = name;
             PhoneNumber = phoneNumber;
@@ -15,12 +15,10 @@
 
         public override bool Equals(object obj)
         {
-            User tmp = obj as User;
-
-            if (tmp == null)
+            if (obj is not User user)
                 return false;
 
-            return Name == tmp.Name && PhoneNumber == tmp.PhoneNumber;
+            return Name == user.Name && PhoneNumber == user.PhoneNumber;
         }
 
         public override int GetHashCode() => Name.GetHashCode() ^ PhoneNumber.GetHashCode();

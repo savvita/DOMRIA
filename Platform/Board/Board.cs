@@ -13,13 +13,15 @@ namespace DOMRIA
             Ads = new List<Ad>();
         }
 
-        public List<Ad> GetAds(User caller = null)
+        public IEnumerable<Ad> GetAds(User caller = null)
         {
             if (caller is Manager)
-                return Ads;
+                return Ads.Where((ad) => ad.Seller.Equals(caller));;
 
-            return Ads.Where((ad) => ad.IsActual == true).ToList();
+            return Ads.Where((ad) => ad.IsActual == true);
         }
+
+        public void Add(Ad ad) => Ads.Add(ad);
 
         public void Save(string path = "ads.txt")
         {

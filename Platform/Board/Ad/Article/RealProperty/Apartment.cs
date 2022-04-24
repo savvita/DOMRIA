@@ -26,6 +26,7 @@ namespace DOMRIA
                 return false;
 
             Rooms.Add(room);
+
             return true;
         }
 

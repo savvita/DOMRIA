@@ -1,35 +1,46 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace DOMRIA
 {
     internal class Client : User
     {
-        private readonly Dictionary<Func<IEnumerable<Ad>, FilterInfo, IEnumerable<Ad>>, FilterInfo> filters;
+        public AndMultipleFilters Filters { get; private set; }
 
-        public Client(string name, string phoneNumber) : base(name, phoneNumber)
+        public Client(string name = "", string phoneNumber = "") : base(name, phoneNumber)
         {
-            filters = new Dictionary<Func<IEnumerable<Ad>, FilterInfo, IEnumerable<Ad>>, FilterInfo>();
+            Filters = new AndMultipleFilters();
         }
 
 
         public IEnumerable<Ad> GetAds(Platform platform) => platform.PlatformBoard.GetAds(this);
 
-        public void AddFilter(Func<IEnumerable<Ad>, FilterInfo, IEnumerable<Ad>> filter, FilterInfo filterInfo) => filters.Add(filter, filterInfo);
+        public void AddFilter(IFilter filter) => Filters.Filters.Add(filter);
 
-        public void RemoveFilter(Func<IEnumerable<Ad>, FilterInfo, IEnumerable<Ad>> filter) => filters.Remove(filter);
+        public void RemoveFilter(IFilter filter) => Filters = Filters.Filter(_filter => _filter.Name != filter.Name);
 
-        public IEnumerable<Ad> SetFilters(IEnumerable<Ad> ads)
+        public IEnumerable<Ad> SetFilters(IEnumerable<Ad> ads) => ads.Where(ad => Filters.Match(ad));
+
+        public void ClearFilters() => Filters = new AndMultipleFilters();
+
+        public void ShowFilters()
         {
-            IEnumerable<Ad> res = ads;
-
-            foreach (var filter in filters)
+            if (Filters.Filters.Count > 0)
             {
-                res = filter.Key.Invoke(res, filter.Value);
-            }
-            return res;
-        }
+                Console.WriteLine(new string('=', 15));
+                Console.WriteLine(new string('=', 15));
 
-        public void ClearFilters() => filters.Clear();
+                Console.WriteLine("Set filters:");
+
+                foreach (var filter in Filters.Filters)
+                {
+                    Console.WriteLine(filter);
+                }
+
+                Console.WriteLine(new string('=', 15));
+                Console.WriteLine(new string('=', 15));
+            }
+        }
     }
 }

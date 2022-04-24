@@ -15,42 +15,27 @@ namespace DOMRIA
 
         public static Room GetRoomFromString(string str)
         {
-            Room room = null;
-
             int index = str.IndexOf(':');
-            string property = str.Substring(0, index);
+            string property = str[..index];
 
-            double area = Convert.ToDouble(str.Substring(index + 2));
+            double area = Convert.ToDouble(str[(index + 2)..]);
 
-            switch(property)
+            Room room = property switch
             {
-                case "Kitchen":
-                    room = new Kitchen(area);
-                    break;
-
-                case "Bedroom":
-                    room = new Bedroom(area);
-                    break;
-
-                case "Bathroom":
-                    room = new Bathroom(area);
-                    break;
-
-                default:
-                    room = new Room(property, area);
-                    break;
-            }
+                "Kitchen" => new Kitchen(area),
+                "Bedroom" => new Bedroom(area),
+                "Bathroom" => new Bathroom(area),
+                _ => new Room(property, area),
+            };
 
             return room;
         }
 
         public override bool Equals(object obj)
         {
-            var tmp = obj as Room;
-
-            if(tmp != null)
+            if (obj is Room room)
             {
-                return tmp.Name == Name && tmp.Area == Area;
+                return room.Name == Name && room.Area == Area;
             }
 
             return false;

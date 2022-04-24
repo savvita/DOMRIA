@@ -36,12 +36,6 @@ namespace DOMRIA
             AdditionalData = new List<AdditionalInfo>();
         }
 
-        public Ad(string title, string description, IPrintable article, Price price, Manager seller, int id) : this(title, description, article, price, seller)
-        {
-            ID = id;
-            _id++;
-        }
-
         public void AddAdditionalData(AdditionalInfo info) => AdditionalData.Add(info);
 
         public void Show() => Show(Console.WriteLine);
@@ -67,7 +61,6 @@ namespace DOMRIA
 
         public static Ad GetAdFromString(string str)
         {
-            int id = 0;
             bool status = true;
             string title = String.Empty;
             string description = String.Empty;
@@ -77,20 +70,16 @@ namespace DOMRIA
             Manager seller = null;
             List<AdditionalInfo> infos = new List<AdditionalInfo>();
 
-            Func<string, int, string> GetValue = (string str, int index) => str.Substring(index + 2);
+            static string GetValue(string str, int index) => str[(index + 2)..];
 
             var lines = str.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string line in lines)
             {
                 int index = line.IndexOf(':');
-                string property = line.Substring(0, index);
+                string property = line[..index];
 
-                if (property == "ID")
-                {
-                    id = Convert.ToInt32(GetValue(line, index));
-                }
-                else if (property == "Status")
+                 if (property == "Status")
                 {
                     if (GetValue(line, index) == "Actual")
                         status = true;
@@ -128,9 +117,10 @@ namespace DOMRIA
                 }
             }
 
-            Ad ad = new Ad(title, description, new RealProperty(ap, address), new RealPropertyPrice(price, ap.TotalArea()), seller, id);
-            ad.IsActual = status;
-
+            Ad ad = new Ad(title, description, new RealProperty(ap, address), new RealPropertyPrice(price, ap.TotalArea()), seller)
+            {
+                IsActual = status
+            };
 
             foreach (AdditionalInfo info in infos)
                 ad.AddAdditionalData(info);
